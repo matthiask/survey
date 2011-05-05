@@ -1,5 +1,6 @@
 from django import forms
 from django.shortcuts import get_object_or_404, render
+from django.utils.translation import ugettext as _
 
 from survey.models import Survey, Question
 
