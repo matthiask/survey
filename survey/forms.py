@@ -1,5 +1,16 @@
 from django import forms
+from django.utils.encoding import force_unicode
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
+
+
+class CustomRadioRenderer(forms.widgets.RadioFieldRenderer):
+    def render(self):
+        return mark_safe(u'\n'.join(force_unicode(w) for w in self))
+
+
+class CustomRadioSelect(forms.widgets.RadioSelect):
+    renderer = CustomRadioRenderer
 
 
 class QuestionForm(forms.Form):
@@ -29,7 +40,7 @@ class QuestionForm(forms.Form):
                     ('4', ''),
                     ('u', ''),
                     ],
-                widget=forms.RadioSelect,
+                widget=CustomRadioSelect,
                 **kwargs)
             keys['importance'] = key + '_imp'
 
@@ -39,7 +50,7 @@ class QuestionForm(forms.Form):
                     ('1', _('Yes')),
                     ('0', _('No')),
                     ],
-                widget=forms.RadioSelect,
+                widget=CustomRadioSelect,
                 **kwargs)
         elif question.type == question.GRADE:
             self.fields[key] = forms.ChoiceField(
@@ -50,7 +61,7 @@ class QuestionForm(forms.Form):
                     ('4', ''),
                     ('u', ''),
                     ],
-                widget=forms.RadioSelect,
+                widget=CustomRadioSelect,
                 **kwargs)
         elif question.type == question.TEXT:
             self.fields[key] = forms.CharField(
