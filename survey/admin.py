@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
 from survey import models
 
@@ -28,4 +29,24 @@ admin.site.register(models.Question,
     list_display=('group', 'ordering', 'text', 'has_importance', 'type'),
     list_display_links=('text',),
     list_filter=('group__survey',),
+    )
+
+admin.site.register(models.SurveyAnswer,
+    fieldsets=(
+        (None, {
+            'fields': ('survey', 'code', 'status'),
+        }),
+        (_('Answers'), {
+            'fields': ('answers',),
+        }),
+        (_('Visitor'), {
+            'fields': ('visitor_company', 'visitor_name', 'visitor_contact'),
+        }),
+        (_('Conductor'), {
+            'fields': ('conductor_company', 'conductor_name', 'conductor_contact'),
+        }),
+        ),
+    list_display=('survey', 'status', 'code', 'visitor_name', 'visitor_contact'),
+    list_display_links=('code',),
+    list_filter=('survey', 'status', 'conductor_name'),
     )

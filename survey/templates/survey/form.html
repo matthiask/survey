@@ -9,7 +9,6 @@
 
 <form method="post" action=".">{% csrf_token %}
 
-
 {{ form.errors }}
 
 <table>
@@ -35,7 +34,9 @@
     </tbody>
 </table>
 
-<input type="submit" value="{% trans "submit" %}" />
+<input type="submit" name="prev" value="{% trans "go back" %}" />
+<input type="submit" name="next" value="{% trans "continue" %}" />
+
 </form>
 
 <style type="text/css">

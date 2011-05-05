@@ -13,7 +13,8 @@ def generate_code():
 class Survey(models.Model):
     is_active = models.BooleanField(_('is active'), default=True)
     title = models.CharField(_('title'), max_length=100)
-    code = models.CharField(_('code'), max_length=20, default=generate_code)
+    code = models.CharField(_('code'), max_length=20, unique=True,
+        default=generate_code)
 
     class Meta:
         verbose_name = _('survey')
@@ -73,6 +74,39 @@ class Question(models.Model):
 
 
 class SurveyAnswer(models.Model):
-    survey = models.ForeignKey(Survey)
-    code = models.CharField(_('code'), max_length=20, default=generate_code)
+    INITIAL = 0
+    STARTED = 10
+    COMPLETED = 20
 
+    STATUS_CHOICES = (
+        (INITIAL, _('initial state')),
+        (STARTED, _('started')),
+        (COMPLETED, _('completed')),
+        )
+
+    survey = models.ForeignKey(Survey, related_name='answers',
+        verbose_name=_('survey'))
+    code = models.CharField(_('code'), max_length=20, default=generate_code)
+    status = models.PositiveIntegerField(_('status'), choices=STATUS_CHOICES,
+        default=INITIAL)
+
+    answers = models.TextField(_('answers'), blank=True)
+
+    visitor_company = models.CharField(_('company'), max_length=100, blank=True)
+    visitor_name = models.CharField(_('name'), max_length=100, blank=True)
+    visitor_contact = models.CharField(_('contact'), max_length=100, blank=True)
+
+    conductor_company = models.CharField(_('company'), max_length=100, blank=True)
+    conductor_name = models.CharField(_('name'), max_length=100, blank=True)
+    conductor_contact = models.CharField(_('contact'), max_length=100, blank=True)
+
+    class Meta:
+        unique_together = (('survey', 'code'),)
+        verbose_name = _('survey answer')
+        verbose_name_plural = _('survey answers')
+
+    def __unicode__(self):
+        return u'Survey %s answered by %s' % (self.survey, self.visitor_contact)
+
+    def get_absolute_url(self):
+        return u'%s%s/' % (self.survey.get_absolute_url(), self.code)
