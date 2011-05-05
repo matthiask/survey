@@ -28,9 +28,11 @@ class Survey(models.Model):
 
 
 class QuestionGroup(models.Model):
-    survey = models.ForeignKey(Survey)
+    survey = models.ForeignKey(Survey, related_name='groups',
+        verbose_name=_('survey'))
     ordering = models.IntegerField(_('ordering'), default=0)
     title = models.CharField(_('title'), max_length=100)
+    new_page = models.BooleanField(_('starts new page'), default=False)
 
     class Meta:
         ordering = ['ordering']

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-05 14:54+0200\n"
+"POT-Creation-Date: 2011-05-05 20:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,74 +18,149 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
+#: admin.py:39
+msgid "Answers"
+msgstr "Antworten"
+
+#: admin.py:42
+msgid "Visitor"
+msgstr "Besucher"
+
+#: admin.py:45
+msgid "Conductor"
+msgstr "Leiter/-in"
+
+#: forms.py:51
+msgid "Yes"
+msgstr "Ja"
+
+#: forms.py:52
+msgid "No"
+msgstr "Nein"
+
 #: models.py:14
 msgid "is active"
 msgstr "ist aktiv"
 
-#: models.py:15 models.py:32
+#: models.py:15 models.py:34
 msgid "title"
 msgstr "Titel"
 
-#: models.py:16
+#: models.py:16 models.py:91
 msgid "code"
 msgstr "Code"
 
-#: models.py:19
+#: models.py:20 models.py:32 models.py:90
 msgid "survey"
 msgstr "Umfrage"
 
-#: models.py:20
+#: models.py:21
 msgid "surveys"
 msgstr "Umfragen"
 
-#: models.py:31 models.py:56
+#: models.py:33 models.py:61
 msgid "ordering"
 msgstr "Sortierung"
 
-#: models.py:37
+#: models.py:35
+msgid "starts new page"
+msgstr "startet eine neue Seite"
+
+#: models.py:40
 msgid "question group"
 msgstr "Fragegruppe"
 
-#: models.py:38
+#: models.py:41
 msgid "question groups"
 msgstr "Fragegruppen"
 
-#: models.py:50
+#: models.py:54
 msgid "yes or no"
 msgstr "Ja oder Nein"
 
-#: models.py:51
+#: models.py:55
 msgid "grade"
 msgstr "Grad"
 
-#: models.py:52
+#: models.py:56
 msgid "text"
 msgstr "Text"
 
-#: models.py:58 models.py:66
+#: models.py:57
+msgid "checkbox"
+msgstr "Checkbox"
+
+#: models.py:63 models.py:71 templates/survey/form.html:17
 msgid "question"
 msgstr "Frage"
 
-#: models.py:60
+#: models.py:65
 msgid "has importance"
 msgstr "hat Wichtigkeit"
 
-#: models.py:61
+#: models.py:66
 msgid "type"
 msgstr "Typ"
 
-#: models.py:67
+#: models.py:72
 msgid "questions"
 msgstr "Fragen"
 
 #: models.py:84
-msgid "Yes"
-msgstr "Ja"
+msgid "initial state"
+msgstr "anfänglicher Status"
 
-#: models.py:84
-msgid "No"
-msgstr "Nein"
+#: models.py:85
+msgid "started"
+msgstr "gestartet"
 
-#: templates/survey/form.html:15
-msgid "submit"
-msgstr "Abschicken"
+#: models.py:86
+msgid "completed"
+msgstr "abgeschlossen"
+
+#: models.py:92
+msgid "status"
+msgstr "Status"
+
+#: models.py:95
+msgid "answers"
+msgstr "Antworten"
+
+#: models.py:97 models.py:101
+msgid "company"
+msgstr "Firma"
+
+#: models.py:98 models.py:102
+msgid "name"
+msgstr "Name"
+
+#: models.py:99 models.py:103
+msgid "contact"
+msgstr "Kontakt"
+
+#: models.py:107
+msgid "survey answer"
+msgstr "Umfragenantwort"
+
+#: models.py:108
+msgid "survey answers"
+msgstr "Umfragenantworten"
+
+#: templates/survey/form.html:18
+msgid "importance"
+msgstr "Wichtigkeit"
+
+#: templates/survey/form.html:19
+msgid "answer"
+msgstr "Antwort"
+
+#: templates/survey/form.html:42
+msgid "go back"
+msgstr "zurück"
+
+#: templates/survey/form.html:43
+msgid "continue"
+msgstr "weiter"
+
+#~ msgid "submit"
+#~ msgstr "Abschicken"

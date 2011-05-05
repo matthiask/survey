@@ -11,11 +11,28 @@ def home(request, code):
     return redirect(survey.answers.create())
 
 
-def survey(request, survey_code, code):
-    answer = get_object_or_404(SurveyAnswer,
+def survey(request, survey_code, code, page=1):
+    answer = get_object_or_404(SurveyAnswer.objects.select_related('survey'),
         survey__is_active=True,
         survey__code=survey_code,
         code=code)
+
+    pages = [[]]
+    for group in answer.survey.groups.all():
+        if group.new_page:
+            pages.append([])
+        pages[-1].append(group)
+
+    # Remove first page if it is empty
+    if not pages[0]:
+        pages = pages[1:]
+
+    # Only look at valid pages
+    try:
+        page = int(page)
+        groups = pages[page - 1]
+    except (KeyError, TypeError, ValueError):
+        return redirect(answer)
 
     try:
         data = simplejson.loads(answer.answers)
@@ -23,7 +40,8 @@ def survey(request, survey_code, code):
         data = {}
 
     kwargs = {
-        'questions': Question.objects.filter(group__survey=answer.survey),
+        'questions': Question.objects.filter(group__in=groups).order_by(
+            'group', 'ordering').select_related('group'),
         'initial': data,
         }
 
@@ -36,9 +54,16 @@ def survey(request, survey_code, code):
             answer.answers = simplejson.dumps(data)
             answer.save()
 
-            return redirect(answer)
-
-            # TODO redirection handling
+            if 'next' in request.POST:
+                return redirect('survey.views.survey',
+                    survey_code=survey_code,
+                    code=code,
+                    page=page+1)
+            elif 'prev' in request.POST:
+                return redirect('survey.views.survey',
+                    survey_code=survey_code,
+                    code=code,
+                    page=page-1)
 
     else:
         form = QuestionForm(**kwargs)
