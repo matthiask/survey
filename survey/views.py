@@ -55,15 +55,17 @@ def survey(request, survey_code, code, page=1):
             answer.save()
 
             if 'next' in request.POST:
-                return redirect('survey.views.survey',
-                    survey_code=survey_code,
-                    code=code,
-                    page=page+1)
+                offset = 1
             elif 'prev' in request.POST:
+                offset = -1
+
+            if 0 < page + offset < len(pages):
                 return redirect('survey.views.survey',
                     survey_code=survey_code,
                     code=code,
-                    page=page-1)
+                    page=page + offset)
+
+            # TODO send to thank you page
 
     else:
         form = QuestionForm(**kwargs)
