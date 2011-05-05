@@ -20,7 +20,12 @@
         </tr>
     </thead>
     <tbody>
-    {% for line in form.survey_fields %}
+    {% for question, line in form.survey_fields %}
+        {% ifchanged question.group %}
+        <tr>
+            <th colspan="3"><h2>{{ question.group.title }}</h2></th>
+        </tr>
+        {% endifchanged %}
         <tr>
             <th>{{ line.answer.label_tag }}</th>
             {% if "importance" in line %}

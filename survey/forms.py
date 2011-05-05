@@ -15,12 +15,13 @@ class CustomRadioSelect(forms.widgets.RadioSelect):
 
 class QuestionForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        questions = kwargs.pop('questions')
+        self.questions = list(kwargs.pop('questions'))
+
         super(QuestionForm, self).__init__(*args, **kwargs)
 
         self._survey = []
-        for question in questions:
-            self._survey.append(self.add_question(question))
+        for question in self.questions:
+            self._survey.append((question, self.add_question(question)))
 
     def add_question(self, question):
         key = 'q_%s_%s' % (question.group_id, question.id)
@@ -76,5 +77,5 @@ class QuestionForm(forms.Form):
         return keys
 
     def survey_fields(self):
-        for line in self._survey:
-            yield dict((key, self[field]) for key, field in line.items())
+        for question, line in self._survey:
+            yield question, dict((key, self[field]) for key, field in line.items())
