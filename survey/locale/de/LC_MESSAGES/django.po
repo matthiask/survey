@@ -1,0 +1,91 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-05-05 14:54+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: models.py:14
+msgid "is active"
+msgstr "ist aktiv"
+
+#: models.py:15 models.py:32
+msgid "title"
+msgstr "Titel"
+
+#: models.py:16
+msgid "code"
+msgstr "Code"
+
+#: models.py:19
+msgid "survey"
+msgstr "Umfrage"
+
+#: models.py:20
+msgid "surveys"
+msgstr "Umfragen"
+
+#: models.py:31 models.py:56
+msgid "ordering"
+msgstr "Sortierung"
+
+#: models.py:37
+msgid "question group"
+msgstr "Fragegruppe"
+
+#: models.py:38
+msgid "question groups"
+msgstr "Fragegruppen"
+
+#: models.py:50
+msgid "yes or no"
+msgstr "Ja oder Nein"
+
+#: models.py:51
+msgid "grade"
+msgstr "Grad"
+
+#: models.py:52
+msgid "text"
+msgstr "Text"
+
+#: models.py:58 models.py:66
+msgid "question"
+msgstr "Frage"
+
+#: models.py:60
+msgid "has importance"
+msgstr "hat Wichtigkeit"
+
+#: models.py:61
+msgid "type"
+msgstr "Typ"
+
+#: models.py:67
+msgid "questions"
+msgstr "Fragen"
+
+#: models.py:84
+msgid "Yes"
+msgstr "Ja"
+
+#: models.py:84
+msgid "No"
+msgstr "Nein"
+
+#: templates/survey/form.html:15
+msgid "submit"
+msgstr "Abschicken"
