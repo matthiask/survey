@@ -3,6 +3,7 @@ import string
 
 from django import forms
 from django.db import models
+from django.utils import simplejson
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -112,3 +113,20 @@ class SurveyAnswer(models.Model):
 
     def get_absolute_url(self):
         return u'%s%s/' % (self.survey.get_absolute_url(), self.code)
+
+    def details(self):
+        try:
+            data = simplejson.loads(self.answers)
+        except ValueError:
+            data = {}
+
+        for question in Question.objects.filter(group__survey=self.survey).order_by(
+                'group', 'ordering').select_related('group'):
+
+            key = 'q_%s_%s' % (question.group_id, question.id)
+            answers = {
+                'answer': data.get(key),
+                'importance': data.get(key + '_imp'),
+                }
+
+            yield question, answers
