@@ -36,14 +36,15 @@ admin.site.register(models.SurveyAnswer,
         (None, {
             'fields': ('survey', 'code', 'status'),
         }),
-        (_('Answers'), {
-            'fields': ('answers',),
-        }),
         (_('Visitor'), {
-            'fields': ('visitor_company', 'visitor_name', 'visitor_contact'),
+            'fields': (('visitor_company', 'visitor_name', 'visitor_contact'),),
         }),
         (_('Conductor'), {
-            'fields': ('conductor_company', 'conductor_name', 'conductor_contact'),
+            'fields': (('conductor_company', 'conductor_name', 'conductor_contact'),),
+        }),
+        (_('Answers'), {
+            'fields': ('answers',),
+            'classes': ('collapse',),
         }),
         ),
     list_display=('survey', 'status', 'code', 'visitor_name', 'visitor_contact'),
