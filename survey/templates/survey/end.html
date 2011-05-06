@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block title %}{{ survey }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1>{{ survey }}</h1>
+
+<form method="post" action=".">{% csrf_token %}
+
+{{ form.errors }}
+
+<table>
+    {{ form.as_table }}
+</table>
+
+<input type="submit" name="finish" value="{% trans "Save" %}" />
+
+</form>
+{% endblock %}

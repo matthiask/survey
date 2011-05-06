@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import ugettext as _
 
-from survey.forms import QuestionForm
+from survey.forms import QuestionForm, SurveyEndForm
 from survey.models import Survey, Question, SurveyAnswer
 
 
@@ -37,18 +37,20 @@ def survey(request, survey_code, code, page=1):
         if form.is_valid():
             form.save()
 
-            if 'next' in request.POST:
-                offset = 1
+            if 'finish' in request.POST:
+                return redirect('survey.views.survey_end',
+                    survey_code=survey_code,
+                    code=code)
             elif 'prev' in request.POST:
                 offset = -1
+            else:
+                offset = 1
 
             if 0 < page + offset <= len(pages):
                 return redirect('survey.views.survey',
                     survey_code=survey_code,
                     code=code,
                     page=page + offset)
-
-            # TODO send to thank you page
 
     else:
         form = QuestionForm(**kwargs)
@@ -61,4 +63,40 @@ def survey(request, survey_code, code, page=1):
         'page_count': len(pages),
         'is_first_page': page == 1,
         'is_last_page': page == len(pages),
+        })
+
+
+def survey_end(request, survey_code, code):
+    answer = get_object_or_404(SurveyAnswer.objects.select_related('survey'),
+        survey__is_active=True,
+        survey__code=survey_code,
+        code=code)
+
+    if request.method == 'POST':
+        form = SurveyEndForm(request.POST, instance=answer)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('survey.views.survey_thanks',
+                    survey_code=survey_code,
+                    code=code)
+    else:
+        form = SurveyEndForm(instance=answer)
+
+    return render(request, 'survey/end.html', {
+        'survey': answer.survey,
+        'form': form,
+        })
+
+
+def survey_thanks(request, survey_code, code):
+    answer = get_object_or_404(SurveyAnswer.objects.select_related('survey'),
+        survey__is_active=True,
+        survey__code=survey_code,
+        code=code)
+
+    return render(request, 'survey/thanks.html', {
+        'survey': answer.survey,
+        'answer': answer,
         })

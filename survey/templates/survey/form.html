@@ -40,7 +40,7 @@
 </table>
 
 {% if not is_first_page %}<input type="submit" name="prev" value="{% trans "go back" %}" />{% endif %}
-{% if is_last_page %}<input type="submit" name="next" value="{% trans "Save" %}" />
+{% if is_last_page %}<input type="submit" name="finish" value="{% trans "Save" %}" />
 {% else %}<input type="submit" name="next" value="{% trans "continue" %}" />
 {% endif %}
 

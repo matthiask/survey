@@ -4,6 +4,7 @@ from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
+from survey.models import SurveyAnswer
 
 class CustomRadioRenderer(forms.widgets.RadioFieldRenderer):
     def render(self):
@@ -91,3 +92,9 @@ class QuestionForm(forms.Form):
     def survey_fields(self):
         for question, line in self._survey:
             yield question, dict((key, self[field]) for key, field in line.items())
+
+
+class SurveyEndForm(forms.ModelForm):
+    class Meta:
+        model = SurveyAnswer
+        fields = ('visitor_company', 'visitor_name', 'visitor_contact')
