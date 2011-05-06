@@ -23,7 +23,7 @@ def survey(request, survey_code, code, page=1):
     try:
         page = int(page)
         groups = pages[page - 1]
-    except (KeyError, TypeError, ValueError):
+    except (IndexError, TypeError, ValueError):
         return redirect(answer)
 
     try:
