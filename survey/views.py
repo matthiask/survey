@@ -16,6 +16,8 @@ def survey(request, survey_code, code, page=1):
         survey__code=survey_code,
         code=code)
 
+    answer.update_status(answer.STARTED)
+
     pages = answer.survey.pages()
 
     # Only look at valid pages
@@ -38,6 +40,8 @@ def survey(request, survey_code, code, page=1):
             form.save()
 
             if 'finish' in request.POST:
+                answer.update_status(answer.FINISHED)
+
                 return redirect('survey.views.survey_end',
                     survey_code=survey_code,
                     code=code)
@@ -77,6 +81,8 @@ def survey_end(request, survey_code, code):
 
         if form.is_valid():
             form.save()
+
+            answer.update_status(answer.COMPLETED)
 
             return redirect('survey.views.survey_thanks',
                     survey_code=survey_code,
