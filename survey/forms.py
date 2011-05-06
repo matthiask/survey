@@ -16,6 +16,9 @@ class CustomRadioSelect(forms.widgets.RadioSelect):
 
 
 class QuestionForm(forms.Form):
+    error_css_class = 'error'
+    required_css_class = 'required'
+
     def __init__(self, *args, **kwargs):
         self.questions = list(kwargs.pop('questions'))
         self.answer = kwargs.pop('answer')
@@ -95,6 +98,9 @@ class QuestionForm(forms.Form):
 
 
 class SurveyEndForm(forms.ModelForm):
+    error_css_class = 'error'
+    required_css_class = 'required'
+
     class Meta:
         model = SurveyAnswer
         fields = ('visitor_company', 'visitor_name', 'visitor_contact')
