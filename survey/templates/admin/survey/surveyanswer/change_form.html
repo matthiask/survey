@@ -7,12 +7,13 @@
 <h1>Umfrage-Tools</h1>
 
 <p><br />
-<a href="mailto:{{ original.visitor_contact }}?subject=Einladung%20zum%20Mitmachen&body={{ original.visitor_company|escapejs }}%20{{ original.visitor_name|escapejs }}%20http://umfrage.nest-info.ch{{ original.get_absolute_url }}">Mail-Link für Umfrage</a>
+<a href="mailto:{{ original.visitor_contact }}?subject=Einladung%20zum%20Mitmachen&body={{ original.visitor_company|escapejs }}%20{{ original.visitor_name|escapejs }}%20%0a%0ahttp://umfrage.nest-info.ch{{ original.get_absolute_url }}">Mail-Link für Umfrage</a>
 </p>
 
 <table>
     <thead>
         <th>Frage</th>
+        <th>Typ</th>
         <th>Wichtigkeit</th>
         <th>Antwort</th>
     </thead>
@@ -20,11 +21,12 @@
     {% for question, answers in original.details %}
         {% ifchanged question.group %}
         <tr>
-            <th colspan="3"><h2>{{ question.group.title }}</h2></th>
+            <th colspan="4"><h2>{{ question.group.title }}</h2></th>
         </tr>
         {% endifchanged %}
         <tr>
             <th>{{ question }}</th>
+            <td>{{ question.get_type_display }}</td>
             <td>{{ answers.importance|default_if_none:"" }}</td>
             <td>{{ answers.answer|default_if_none:"" }}</td>
         </tr>
