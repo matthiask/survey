@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.utils import simplejson
 from django.utils.translation import ugettext as _
 
 from survey.forms import QuestionForm
@@ -26,25 +25,17 @@ def survey(request, survey_code, code, page=1):
     except (IndexError, TypeError, ValueError):
         return redirect(answer)
 
-    try:
-        data = simplejson.loads(answer.answers)
-    except ValueError:
-        data = {}
-
     kwargs = {
         'questions': Question.objects.filter(group__in=groups).order_by(
             'group', 'ordering').select_related('group'),
-        'initial': data,
+        'answer': answer,
         }
 
     if request.method == 'POST':
         form = QuestionForm(request.POST, **kwargs)
 
         if form.is_valid():
-            data.update(form.cleaned_data)
-
-            answer.answers = simplejson.dumps(data)
-            answer.save()
+            form.save()
 
             if 'next' in request.POST:
                 offset = 1

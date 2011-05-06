@@ -1,4 +1,5 @@
 from django import forms
+from django.utils import simplejson
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
@@ -16,12 +17,23 @@ class CustomRadioSelect(forms.widgets.RadioSelect):
 class QuestionForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.questions = list(kwargs.pop('questions'))
+        self.answer = kwargs.pop('answer')
+
+        try:
+            kwargs['initial'] = self._answers = simplejson.loads(self.answer.answers)
+        except ValueError:
+            self._answers = {}
 
         super(QuestionForm, self).__init__(*args, **kwargs)
 
         self._survey = []
         for question in self.questions:
             self._survey.append((question, self.add_question(question)))
+
+    def save(self):
+        self._answers.update(self.cleaned_data)
+        self.answer.answers = simplejson.dumps(self._answers)
+        self.answer.save()
 
     def add_question(self, question):
         key = 'q_%s_%s' % (question.group_id, question.id)
