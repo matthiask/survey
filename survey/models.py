@@ -27,6 +27,19 @@ class Survey(models.Model):
     def get_absolute_url(self):
         return '/%s/' % self.code
 
+    def pages(self):
+        pages = [[]]
+        for group in self.groups.all():
+            if group.new_page:
+                pages.append([])
+            pages[-1].append(group)
+
+        # Remove first page if it is empty
+        if not pages[0]:
+            pages = pages[1:]
+
+        return pages
+
 
 class QuestionGroup(models.Model):
     survey = models.ForeignKey(Survey, related_name='groups',

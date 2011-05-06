@@ -17,15 +17,7 @@ def survey(request, survey_code, code, page=1):
         survey__code=survey_code,
         code=code)
 
-    pages = [[]]
-    for group in answer.survey.groups.all():
-        if group.new_page:
-            pages.append([])
-        pages[-1].append(group)
-
-    # Remove first page if it is empty
-    if not pages[0]:
-        pages = pages[1:]
+    pages = answer.survey.pages()
 
     # Only look at valid pages
     try:
@@ -73,4 +65,7 @@ def survey(request, survey_code, code, page=1):
     return render(request, 'survey/form.html', {
         'survey': answer.survey,
         'form': form,
+
+        'is_first_page': page == 1,
+        'is_last_page': page == len(pages) - 1,
         })
