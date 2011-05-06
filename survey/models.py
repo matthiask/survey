@@ -91,12 +91,16 @@ class Question(models.Model):
 
 class SurveyAnswer(models.Model):
     INITIAL = 0
+    INVITED = 5
     STARTED = 10
+    FINISHED = 15
     COMPLETED = 20
 
     STATUS_CHOICES = (
         (INITIAL, _('initial state')),
+        (INVITED, _('invited')),
         (STARTED, _('started')),
+        (FINISHED, _('finished')),
         (COMPLETED, _('completed')),
         )
 

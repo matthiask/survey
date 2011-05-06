@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-05 20:01+0200\n"
+"POT-Creation-Date: 2011-05-06 11:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,132 +19,144 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: admin.py:39
-msgid "Answers"
-msgstr "Antworten"
-
-#: admin.py:42
 msgid "Visitor"
 msgstr "Besucher"
 
-#: admin.py:45
+#: admin.py:42
 msgid "Conductor"
 msgstr "Leiter/-in"
 
-#: forms.py:51
+#: admin.py:45
+msgid "Answers"
+msgstr "Antworten"
+
+#: forms.py:64
 msgid "Yes"
 msgstr "Ja"
 
-#: forms.py:52
+#: forms.py:65
 msgid "No"
 msgstr "Nein"
 
-#: models.py:14
+#: models.py:15
 msgid "is active"
 msgstr "ist aktiv"
 
-#: models.py:15 models.py:34
+#: models.py:16 models.py:48
 msgid "title"
 msgstr "Titel"
 
-#: models.py:16 models.py:91
+#: models.py:17 models.py:109
 msgid "code"
 msgstr "Code"
 
-#: models.py:20 models.py:32 models.py:90
+#: models.py:21 models.py:46 models.py:108
 msgid "survey"
 msgstr "Umfrage"
 
-#: models.py:21
+#: models.py:22
 msgid "surveys"
 msgstr "Umfragen"
 
-#: models.py:33 models.py:61
+#: models.py:47 models.py:75
 msgid "ordering"
 msgstr "Sortierung"
 
-#: models.py:35
+#: models.py:49
 msgid "starts new page"
 msgstr "startet eine neue Seite"
 
-#: models.py:40
+#: models.py:54
 msgid "question group"
 msgstr "Fragegruppe"
 
-#: models.py:41
+#: models.py:55
 msgid "question groups"
 msgstr "Fragegruppen"
 
-#: models.py:54
+#: models.py:68
 msgid "yes or no"
 msgstr "Ja oder Nein"
 
-#: models.py:55
+#: models.py:69
 msgid "grade"
 msgstr "Grad"
 
-#: models.py:56
+#: models.py:70
 msgid "text"
 msgstr "Text"
 
-#: models.py:57
+#: models.py:71
 msgid "checkbox"
 msgstr "Checkbox"
 
-#: models.py:63 models.py:71 templates/survey/form.html:17
+#: models.py:77 models.py:85 templates/survey/form.html:17
 msgid "question"
 msgstr "Frage"
 
-#: models.py:65
+#: models.py:79
 msgid "has importance"
 msgstr "hat Wichtigkeit"
 
-#: models.py:66
+#: models.py:80
 msgid "type"
 msgstr "Typ"
 
-#: models.py:72
+#: models.py:86
 msgid "questions"
 msgstr "Fragen"
 
-#: models.py:84
+#: models.py:100
 msgid "initial state"
 msgstr "anfänglicher Status"
 
-#: models.py:85
+#: models.py:101
+msgid "invited"
+msgstr "eingeladen"
+
+#: models.py:102
 msgid "started"
 msgstr "gestartet"
 
-#: models.py:86
+#: models.py:103
+msgid "finished"
+msgstr "beendet"
+
+#: models.py:104
 msgid "completed"
 msgstr "abgeschlossen"
 
-#: models.py:92
+#: models.py:110
 msgid "status"
 msgstr "Status"
 
-#: models.py:95
+#: models.py:113
 msgid "answers"
 msgstr "Antworten"
 
-#: models.py:97 models.py:101
+#: models.py:115 models.py:119
 msgid "company"
 msgstr "Firma"
 
-#: models.py:98 models.py:102
+#: models.py:116 models.py:120
 msgid "name"
 msgstr "Name"
 
-#: models.py:99 models.py:103
+#: models.py:117 models.py:121
 msgid "contact"
 msgstr "Kontakt"
 
-#: models.py:107
+#: models.py:125
 msgid "survey answer"
 msgstr "Umfragenantwort"
 
-#: models.py:108
+#: models.py:126
 msgid "survey answers"
 msgstr "Umfragenantworten"
+
+#: templates/survey/end.html:18 templates/survey/form.html:43
+msgid "Save"
+msgstr "Sichern"
 
 #: templates/survey/form.html:18
 msgid "importance"
@@ -158,9 +170,13 @@ msgstr "Antwort"
 msgid "go back"
 msgstr "zurück"
 
-#: templates/survey/form.html:43
+#: templates/survey/form.html:44
 msgid "continue"
 msgstr "weiter"
+
+#: templates/survey/thanks.html:10
+msgid "Thanks for participating in our survey!"
+msgstr "Vielen Dank, dass Sie in unserer Umfrage mitgemacht haben!"
 
 #~ msgid "submit"
 #~ msgstr "Abschicken"
