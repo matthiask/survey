@@ -51,7 +51,7 @@ def survey(request, survey_code, code, page=1):
             elif 'prev' in request.POST:
                 offset = -1
 
-            if 0 < page + offset < len(pages):
+            if 0 < page + offset <= len(pages):
                 return redirect('survey.views.survey',
                     survey_code=survey_code,
                     code=code,
@@ -66,6 +66,8 @@ def survey(request, survey_code, code, page=1):
         'survey': answer.survey,
         'form': form,
 
+        'page': page,
+        'page_count': len(pages),
         'is_first_page': page == 1,
-        'is_last_page': page == len(pages) - 1,
+        'is_last_page': page == len(pages),
         })
