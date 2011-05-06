@@ -61,6 +61,7 @@ def survey(request, survey_code, code, page=1):
 
     return render(request, 'survey/form.html', {
         'survey': answer.survey,
+        'answer': answer,
         'form': form,
 
         'page': page,
@@ -92,6 +93,7 @@ def survey_end(request, survey_code, code):
 
     return render(request, 'survey/end.html', {
         'survey': answer.survey,
+        'answer': answer,
         'form': form,
         })
 
