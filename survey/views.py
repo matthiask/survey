@@ -101,7 +101,7 @@ def survey_end(request, survey_code, code):
         code=code)
 
     if request.method == 'POST':
-        form = SurveyEndForm(request.POST, instance=answer)
+        form = SurveyEndForm(request.POST, instance=answer, label_suffix='')
 
         if form.is_valid():
             form.save()
@@ -112,7 +112,7 @@ def survey_end(request, survey_code, code):
                     survey_code=survey_code,
                     code=code)
     else:
-        form = SurveyEndForm(instance=answer)
+        form = SurveyEndForm(instance=answer, label_suffix='')
 
     return render(request, 'survey/end.html', {
         'survey': answer.survey,
