@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import ugettext as _
 
@@ -5,11 +6,32 @@ from survey.forms import QuestionForm, SurveyEndForm
 from survey.models import Survey, Question, SurveyAnswer
 
 
+def increment_visitor_counter(func):
+    def _fn(request, *args, **kwargs):
+        response = func(request, *args, **kwargs)
+
+        if 'seen' not in request.COOKIES:
+            response.set_cookie('seen', 1)
+            survey_code = kwargs.get('survey_code')
+            code = kwargs.get('code')
+
+            if survey_code and code:
+                SurveyAnswer.objects.filter(
+                    survey__is_active=True,
+                    survey__code=survey_code,
+                    code=code,
+                    ).update(visitor_counter=F('visitor_counter') + 1)
+
+        return response
+    return _fn
+
+
 def home(request, code):
     survey = get_object_or_404(Survey.objects.filter(is_active=True), code=code)
     return redirect(survey.answers.create())
 
 
+@increment_visitor_counter
 def survey(request, survey_code, code, page=1):
     answer = get_object_or_404(SurveyAnswer.objects.select_related('survey'),
         survey__is_active=True,
@@ -71,6 +93,7 @@ def survey(request, survey_code, code, page=1):
         })
 
 
+@increment_visitor_counter
 def survey_end(request, survey_code, code):
     answer = get_object_or_404(SurveyAnswer.objects.select_related('survey'),
         survey__is_active=True,

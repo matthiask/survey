@@ -116,6 +116,8 @@ class SurveyAnswer(models.Model):
     visitor_name = models.CharField(_('name'), max_length=100, blank=True)
     visitor_contact = models.CharField(_('contact'), max_length=100)
 
+    visitor_counter = models.PositiveIntegerField(_('visitor counter'), default=0)
+
     conductor_company = models.CharField(_('company'), max_length=100, blank=True)
     conductor_name = models.CharField(_('name'), max_length=100, blank=True)
     conductor_contact = models.CharField(_('contact'), max_length=100, blank=True)
