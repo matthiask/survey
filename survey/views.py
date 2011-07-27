@@ -1,4 +1,9 @@
+import StringIO
+import xlwt
+
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import F
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import ugettext as _
 
@@ -131,3 +136,60 @@ def survey_thanks(request, survey_code, code):
         'survey': answer.survey,
         'answer': answer,
         })
+
+
+@staff_member_required
+def survey_export(request, code):
+    survey = get_object_or_404(Survey, code=code)
+    w = xlwt.Workbook()
+    ws = w.add_sheet('survey')
+    row = 0
+
+    ws.write(row, 0, unicode(survey))
+    row += 2
+
+    for col, field in enumerate(SurveyAnswer._meta.fields):
+        ws.write(row, col, unicode(field.verbose_name))
+
+    group = None
+    col = len(SurveyAnswer._meta.fields) + 1
+    question_column = {}
+
+    for question in Question.objects.filter(group__survey=survey).order_by(
+            'group', 'ordering').select_related('group'):
+
+        if question.group != group:
+            col += 1
+            group = question.group
+            ws.write(row, col, unicode(group))
+
+        question_column[question.pk] = col
+        ws.write(row + 1, col, unicode(question))
+        ws.write(row + 2, col, question.get_type_display())
+        col += 1
+        if question.has_importance:
+            ws.write(row + 2, col, _('has importance'))
+            col += 1
+
+    row += 3
+
+    for answer in survey.answers.select_related():
+        for col, field in enumerate(SurveyAnswer._meta.fields):
+            if field.choices:
+                ws.write(row, col, getattr(answer, 'get_%s_display' % field.name)())
+            else:
+                ws.write(row, col, unicode(getattr(answer, field.name)))
+
+        for question, answers in answer.details():
+            col = question_column[question.pk]
+            ws.write(row, col, unicode(answers['answer']))
+            if question.has_importance:
+                ws.write(row, col + 1, unicode(answers['importance']))
+
+        row += 1
+
+    output = StringIO.StringIO()
+    w.save(output)
+    response = HttpResponse(output.getvalue(), mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'inline; filename=survey-%s.xls' % survey.code
+    return response
