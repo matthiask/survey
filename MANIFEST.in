@@ -1,7 +1,6 @@
 include LICENSE
 include MANIFEST.in
 include README.rst
-include setuplib.py
 recursive-include survey/static *
 recursive-include survey/locale *
 recursive-include survey/templates *

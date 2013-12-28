@@ -1,10 +1,12 @@
+import json
+
 from django import forms
-from django.utils import simplejson
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
 from survey.models import SurveyAnswer
+
 
 class CustomRadioRenderer(forms.widgets.RadioFieldRenderer):
     def render(self):
@@ -24,7 +26,8 @@ class QuestionForm(forms.Form):
         self.answer = kwargs.pop('answer')
 
         try:
-            kwargs['initial'] = self._answers = simplejson.loads(self.answer.answers)
+            kwargs['initial'] = self._answers = json.loads(
+                self.answer.answers)
         except ValueError:
             self._answers = {}
 
@@ -36,7 +39,7 @@ class QuestionForm(forms.Form):
 
     def save(self):
         self._answers.update(self.cleaned_data)
-        self.answer.answers = simplejson.dumps(self._answers)
+        self.answer.answers = json.dumps(self._answers)
         self.answer.save()
 
     def add_question(self, question):
@@ -56,7 +59,7 @@ class QuestionForm(forms.Form):
                     ('3', ''),
                     ('4', ''),
                     ('u', ''),
-                    ],
+                ],
                 widget=CustomRadioSelect,
                 **kwargs)
             keys['importance'] = key + '_imp'
@@ -66,7 +69,7 @@ class QuestionForm(forms.Form):
                 choices=[
                     ('1', _('Yes')),
                     ('0', _('No')),
-                    ],
+                ],
                 widget=CustomRadioSelect,
                 **kwargs)
         elif question.type == question.GRADE:
@@ -77,7 +80,7 @@ class QuestionForm(forms.Form):
                     ('3', ''),
                     ('4', ''),
                     ('u', ''),
-                    ],
+                ],
                 widget=CustomRadioSelect,
                 **kwargs)
         elif question.type == question.TEXT:
@@ -94,7 +97,8 @@ class QuestionForm(forms.Form):
 
     def survey_fields(self):
         for question, line in self._survey:
-            yield question, dict((key, self[field]) for key, field in line.items())
+            yield question, dict(
+                (key, self[field]) for key, field in line.items())
 
 
 class SurveyEndForm(forms.ModelForm):

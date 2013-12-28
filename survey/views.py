@@ -25,20 +25,23 @@ def increment_visitor_counter(func):
                     survey__is_active=True,
                     survey__code=survey_code,
                     code=code,
-                    ).update(visitor_counter=F('visitor_counter') + 1)
+                ).update(visitor_counter=F('visitor_counter') + 1)
 
         return response
     return _fn
 
 
 def home(request, code):
-    survey = get_object_or_404(Survey.objects.filter(is_active=True), code=code)
+    survey = get_object_or_404(
+        Survey.objects.filter(is_active=True),
+        code=code)
     return redirect(survey.answers.create())
 
 
 @increment_visitor_counter
 def survey(request, survey_code, code, page=1):
-    answer = get_object_or_404(SurveyAnswer.objects.select_related('survey'),
+    answer = get_object_or_404(
+        SurveyAnswer.objects.select_related('survey'),
         survey__is_active=True,
         survey__code=survey_code,
         code=code)
@@ -58,7 +61,7 @@ def survey(request, survey_code, code, page=1):
         'questions': Question.objects.filter(group__in=groups).order_by(
             'group', 'ordering').select_related('group'),
         'answer': answer,
-        }
+    }
 
     if request.method == 'POST':
         form = QuestionForm(request.POST, **kwargs)
@@ -69,7 +72,8 @@ def survey(request, survey_code, code, page=1):
             if 'finish' in request.POST:
                 answer.update_status(answer.FINISHED)
 
-                return redirect('survey.views.survey_end',
+                return redirect(
+                    'survey.views.survey_end',
                     survey_code=survey_code,
                     code=code)
             elif 'prev' in request.POST:
@@ -78,7 +82,8 @@ def survey(request, survey_code, code, page=1):
                 offset = 1
 
             if 0 < page + offset <= len(pages):
-                return redirect('survey.views.survey',
+                return redirect(
+                    'survey.views.survey',
                     survey_code=survey_code,
                     code=code,
                     page=page + offset)
@@ -95,12 +100,13 @@ def survey(request, survey_code, code, page=1):
         'page_count': len(pages),
         'is_first_page': page == 1,
         'is_last_page': page == len(pages),
-        })
+    })
 
 
 @increment_visitor_counter
 def survey_end(request, survey_code, code):
-    answer = get_object_or_404(SurveyAnswer.objects.select_related('survey'),
+    answer = get_object_or_404(
+        SurveyAnswer.objects.select_related('survey'),
         survey__is_active=True,
         survey__code=survey_code,
         code=code)
@@ -113,9 +119,10 @@ def survey_end(request, survey_code, code):
 
             answer.update_status(answer.COMPLETED)
 
-            return redirect('survey.views.survey_thanks',
-                    survey_code=survey_code,
-                    code=code)
+            return redirect(
+                'survey.views.survey_thanks',
+                survey_code=survey_code,
+                code=code)
     else:
         form = SurveyEndForm(instance=answer, label_suffix='')
 
@@ -123,11 +130,12 @@ def survey_end(request, survey_code, code):
         'survey': answer.survey,
         'answer': answer,
         'form': form,
-        })
+    })
 
 
 def survey_thanks(request, survey_code, code):
-    answer = get_object_or_404(SurveyAnswer.objects.select_related('survey'),
+    answer = get_object_or_404(
+        SurveyAnswer.objects.select_related('survey'),
         survey__is_active=True,
         survey__code=survey_code,
         code=code)
@@ -135,7 +143,7 @@ def survey_thanks(request, survey_code, code):
     return render(request, 'survey/thanks.html', {
         'survey': answer.survey,
         'answer': answer,
-        })
+    })
 
 
 @staff_member_required
@@ -176,7 +184,8 @@ def survey_export(request, code):
     for answer in survey.answers.select_related():
         for col, field in enumerate(SurveyAnswer._meta.fields):
             if field.choices:
-                ws.write(row, col, getattr(answer, 'get_%s_display' % field.name)())
+                ws.write(
+                    row, col, getattr(answer, 'get_%s_display' % field.name)())
             else:
                 ws.write(row, col, unicode(getattr(answer, field.name)))
 
@@ -190,6 +199,10 @@ def survey_export(request, code):
 
     output = StringIO.StringIO()
     w.save(output)
-    response = HttpResponse(output.getvalue(), mimetype='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'inline; filename=survey-%s.xls' % survey.code
+    response = HttpResponse(
+        output.getvalue(),
+        content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'inline; filename=survey-%s.xls' % (
+        survey.code,
+    )
     return response
