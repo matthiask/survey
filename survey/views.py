@@ -73,7 +73,7 @@ def survey(request, survey_code, code, page=1):
                 answer.update_status(answer.FINISHED)
 
                 return redirect(
-                    'survey.views.survey_end',
+                    'survey_survey_end',
                     survey_code=survey_code,
                     code=code)
             elif 'prev' in request.POST:
@@ -83,7 +83,7 @@ def survey(request, survey_code, code, page=1):
 
             if 0 < page + offset <= len(pages):
                 return redirect(
-                    'survey.views.survey',
+                    'survey_survey_page',
                     survey_code=survey_code,
                     code=code,
                     page=page + offset)
@@ -120,7 +120,7 @@ def survey_end(request, survey_code, code):
             answer.update_status(answer.COMPLETED)
 
             return redirect(
-                'survey.views.survey_thanks',
+                'survey_survey_thanks',
                 survey_code=survey_code,
                 code=code)
     else:

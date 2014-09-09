@@ -1,5 +1,6 @@
 import json
 
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.crypto import get_random_string
 from django.utils.translation import ugettext_lazy as _
@@ -20,7 +21,7 @@ class Survey(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return '/%s/' % self.code
+        return reverse('survey_home', kwargs={'code': self.code})
 
     def pages(self):
         pages = [[]]
@@ -136,7 +137,10 @@ class SurveyAnswer(models.Model):
             self.survey, self.visitor_contact)
 
     def get_absolute_url(self):
-        return u'%s%s/' % (self.survey.get_absolute_url(), self.code)
+        return reverse('survey_survey_start', kwargs={
+            'survey_code': self.survey.code,
+            'code': self.code,
+        })
 
     def details(self):
         try:
