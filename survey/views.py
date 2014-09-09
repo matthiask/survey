@@ -5,10 +5,15 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import F
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import six
 from django.utils.translation import ugettext as _
 
 from survey.forms import QuestionForm, SurveyEndForm
 from survey.models import Survey, Question, SurveyAnswer
+
+
+if six.PY3:
+    unicode = str
 
 
 def increment_visitor_counter(func):
